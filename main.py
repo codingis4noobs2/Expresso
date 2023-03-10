@@ -15,6 +15,7 @@ cloudinary.config(
 )
 
 r_id = []
+my_upload = None
 
 st.set_page_config(layout="wide", page_title="Expresso")
 

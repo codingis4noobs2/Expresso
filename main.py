@@ -14,23 +14,29 @@ cloudinary.config(
   secure = True
 )
 
-first_time = []
 r_id = []
 
 st.set_page_config(layout="wide", page_title="Expresso")
 
+if "first_time" not in st.session_state:
+    st.session_state.first_time = False
+
+if not st.session_state.first_time:
+        st.balloons()
+        st.session_state.first_time = True
+
 # main page
-st.balloons()
 st.write("<h1 style='text-align: center;'>Expresso</h1>", unsafe_allow_html=True)
 st.write("<h3 style='text-align: center;'>All in one tool to Experiment with your images :)</h3>", unsafe_allow_html=True)
 st.write("Choose Input Method:")
-my_upload = None
+
 input_method = st.selectbox('Select an input method:', ('Select an option', 'Upload An Image', 'Take Input From Camera'))
 if input_method is not None:
     if input_method == 'Upload An Image':
         my_upload = st.file_uploader("Upload an image", type=["png", "jpg", "jpeg"])
     elif input_method == 'Take Input From Camera':
         my_upload = st.camera_input("Take a picture")
+
 if my_upload is not None:
     operations = st.selectbox('Select an operation to try:', ('Select an option', 'Resize Operations', 'Effects', 'Layer Effects', 'Enhancing Tools', 'Other Helpful Tools'))
     if operations is not None:
@@ -50,7 +56,9 @@ if my_upload is not None:
                     r_id.append(r)
                     image = upload(my_upload, public_id=f"test_{r}", width=width, height=height, crop="scale")
                     st.write("<h3>Output Image:</h3>", unsafe_allow_html=True)
-                    st.markdown(f'<a href="{image["url"]}" download>Download Image</a>', unsafe_allow_html=True)
+                    response = requests.get(image['url'])
+                    img_data = response.content
+                    st.download_button(label="Download Image", data=img_data, file_name="image.jpg", mime="image/jpg")
                     st.image(image['url'])
                 elif sub_operations == 'Limit Fit':
                     st.info("Same as the fit mode but only if the original asset is larger than the specified limit(width and height), in which case the asset is scaled down so that it takes up as much space as possible within a bounding box defined by the specified width and height parameters. The original aspect ratio is retained(by default) and all of the original asset is visible. This mode doesn't scale up the asset if your requested dimension are larger than the original image size.")
@@ -65,7 +73,9 @@ if my_upload is not None:
                     r_id.append(r)
                     image = upload(my_upload, public_id=f"test_{r}", width=width, height=height, crop="limit")
                     st.write("<h3>Output Image:</h3>", unsafe_allow_html=True)
-                    st.markdown(f'<a href="{image["url"]}" download>Download Image</a>', unsafe_allow_html=True)
+                    response = requests.get(image['url'])
+                    img_data = response.content
+                    st.download_button(label="Download Image", data=img_data, file_name="image.jpg", mime="image/jpg")
                     st.image(image['url'])
                 elif sub_operations == 'Fill':
                     st.info("Creates an asset with exact specified width and height without distorting the asset.")
@@ -80,7 +90,9 @@ if my_upload is not None:
                     r_id.append(r)
                     image = upload(my_upload, public_id=f"test_{r}", width=width, height=height, crop="fill")
                     st.write("<h3>Output Image:</h3>", unsafe_allow_html=True)
-                    st.markdown(f'<a href="{image["url"]}" download>Download Image</a>', unsafe_allow_html=True)
+                    response = requests.get(image['url'])
+                    img_data = response.content
+                    st.download_button(label="Download Image", data=img_data, file_name="image.jpg", mime="image/jpg")
                     st.image(image['url'])
                 elif sub_operations == 'Fit':
                     st.info("Scales the asset up or down so that it takes up as much space as possible")
@@ -95,7 +107,9 @@ if my_upload is not None:
                     r_id.append(r)
                     image = upload(my_upload, public_id=f"test_{r}", width=width, height=height, crop="fit")
                     st.write("<h3>Output Image:</h3>", unsafe_allow_html=True)
-                    st.markdown(f'<a href="{image["url"]}" download>Download Image</a>', unsafe_allow_html=True)
+                    response = requests.get(image['url'])
+                    img_data = response.content
+                    st.download_button(label="Download Image", data=img_data, file_name="image.jpg", mime="image/jpg")
                     st.image(image['url'])
                 elif sub_operations == 'Crop':
                     st.info("Extracts the specified size from the original image without distorting or scaling the delivered asset.")
@@ -112,7 +126,9 @@ if my_upload is not None:
                     r_id.append(r)
                     image = upload(my_upload, public_id=f"test_{r}", width=width, height=height, crop="crop", gravity=dict[direction])
                     st.write("<h3>Output Image:</h3>", unsafe_allow_html=True)
-                    st.markdown(f'<a href="{image["url"]}" download>Download Image</a>', unsafe_allow_html=True)
+                    response = requests.get(image['url'])
+                    img_data = response.content
+                    st.download_button(label="Download Image", data=img_data, file_name="image.jpg", mime="image/jpg")
                     st.image(image['url'])
                 elif sub_operations == 'Minimum Fit':
                     st.info("The minimum fit mode is the same as the fit mode but only if the original image is smaller than than the specified minimum(width and height), in which case the image is scaled up so that it takes up as much space as possible within a bounding box defined by the specified width and height parameters. The original aspect ratio is retained by default and all of the original image is visible. This mode doesn't scale down the image if your requested dimensions are smaller thant the original image's.")
@@ -127,7 +143,9 @@ if my_upload is not None:
                     r_id.append(r)
                     image = upload(my_upload, public_id=f"test_{r}", width=width, height=height, crop="mfit")
                     st.write("<h3>Output Image:</h3>", unsafe_allow_html=True)
-                    st.markdown(f'<a href="{image["url"]}" download>Download Image</a>', unsafe_allow_html=True)
+                    response = requests.get(image['url'])
+                    img_data = response.content
+                    st.download_button(label="Download Image", data=img_data, file_name="image.jpg", mime="image/jpg")
                     st.image(image['url'])
         elif operations == 'Effects':
             sub_operations = st.selectbox("What opreation would you like to perform from Effects available:", ('Select an Effect', 'Blur Face', 'Pixelate Portion', 'Convert to Grayscale'))
@@ -139,7 +157,9 @@ if my_upload is not None:
                     r_id.append(r)
                     image = upload(my_upload, public_id=f"test_{r}", effect="blur_faces:2000")
                     st.write("<h3>Output Image:</h3>", unsafe_allow_html=True)
-                    st.markdown(f'<a href="{image["url"]}" download>Download Image</a>', unsafe_allow_html=True)
+                    response = requests.get(image['url'])
+                    img_data = response.content
+                    st.download_button(label="Download Image", data=img_data, file_name="image.jpg", mime="image/jpg")
                     st.image(image['url'])
                 elif sub_operations == 'Pixelate Portion':
                     col1, col2 = st.columns(2)
@@ -155,7 +175,9 @@ if my_upload is not None:
                     r_id.append(r)
                     image = upload(my_upload, public_id=f"test_{r}", width=width, height=height, x=x, y=y, crop="fill", effect="pixelate_region")
                     st.write("<h3>Output Image:</h3>", unsafe_allow_html=True)
-                    st.markdown(f'<a href="{image["url"]}" download>Download Image</a>', unsafe_allow_html=True)
+                    response = requests.get(image['url'])
+                    img_data = response.content
+                    st.download_button(label="Download Image", data=img_data, file_name="image.jpg", mime="image/jpg")
                     st.image(image['url'])
                 elif sub_operations == 'Convert to Grayscale':
                     r = ''.join(random.choices(string.ascii_letters + string.digits, k=6))
@@ -164,7 +186,9 @@ if my_upload is not None:
                     r_id.append(r)
                     image = upload(my_upload, public_id=f"test_{r}", effect="grayscale")
                     st.write("<h3>Output Image:</h3>", unsafe_allow_html=True)
-                    st.markdown(f'<a href="{image["url"]}" download>Download Image</a>', unsafe_allow_html=True)
+                    response = requests.get(image['url'])
+                    img_data = response.content
+                    st.download_button(label="Download Image", data=img_data, file_name="image.jpg", mime="image/jpg")
                     st.image(image['url'])
         elif operations == 'Layer Effects':
             sub_operations = st.selectbox("What opreation would you like to perform from Layers Effects available:", ('Select an Effect', 'Text Layer'))
@@ -196,3 +220,4 @@ if my_upload is not None:
         pass
 else:
     pass
+

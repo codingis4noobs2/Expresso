@@ -8,6 +8,6 @@
 
 ### Step2: Install required libraries using: `pip install -r requirements.txt`
 
-### Step3: Head Over to (Cloudinary)[https://cloudinary.com/], And get replace api_key with your key and api_secret with your secret.
+### Step3: Head Over to [Cloudinary](https://cloudinary.com/), And get replace api_key with your key and api_secret with your secret.
 
 ### Run using: `streamlit run main.py`

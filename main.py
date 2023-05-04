@@ -39,7 +39,7 @@ if input_method is not None:
         my_upload = st.camera_input("Take a picture")
 
 if my_upload is not None:
-    operations = st.selectbox('Select an operation to try:', ('Select an option', 'Resize Operations', 'Effects', 'Layer Effects', 'Enhancing Tools', 'Other Helpful Tools'))
+    operations = st.selectbox('Select an operation to try:', ('Select an option', 'Resize Operations', 'Effects', 'Layer Effects', 'Enhancing Tools'))
     if operations is not None:
         if operations == 'Resize Operations':
             sub_operations = st.selectbox('What opreation would you like to perform from Resize Opreations available:', ('Select an operation', 'Scale', 'Limit Fit', 'Fill', 'Fit', 'Crop', 'Minimum Fit'))
